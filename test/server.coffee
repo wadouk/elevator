@@ -4,12 +4,43 @@ elevator = require '../server/elevator.js'
 describe 'Code Elevator module', () ->
    describe '#dummy', () ->
       it 'should return hello', () ->
-        elevator.reset();
+        elevator.reset()
         should.equal(elevator.nextCommand(),'UP')
 
-      it 'when go to top go down', () ->
-        elevator.reset();
-        elevator.ca
+      it 'when higest go down', () ->
+        elevator.reset()
+        elevator.stair=5
+        should.equal(elevator.nextCommand(),'DOWN')
+        should.equal(elevator.stair,4)
+
+      it 'when lowest go up', () ->
+        elevator.reset()
+        elevator.stair=0
         should.equal(elevator.nextCommand(),'UP')
-      it 'when go to down go top', () ->
+        should.equal(elevator.stair,1)
+
+      it 'when go up stay up', () ->
+        elevator.reset()
+        elevator.stair=3
+        elevator.way='UP'
+        should.equal(elevator.nextCommand(),'UP')
+        should.equal(elevator.stair,4)
+      it 'when go down stay down', () ->
+        elevator.reset()
+        elevator.stair=3
+        elevator.way='DOWN'
+        should.equal(elevator.nextCommand(),'DOWN')
+        should.equal(elevator.stair,2)
+
+      it 'when call, open close and up', () ->
+        elevator.reset()
+        elevator.call({atFloor:3})
+        elevator.stair=2
+        elevator.way='UP'
+        should.equal(elevator.nextCommand(),'OPEN')
+        should.equal(elevator.stair,2)
+        should.equal(elevator.nextCommand(),'CLOSE')
+        should.equal(elevator.stair,2)
+        should.equal(elevator.nextCommand(),'UP')
+        should.equal(elevator.stair,3)
 

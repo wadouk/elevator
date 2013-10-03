@@ -1,33 +1,29 @@
 function elevator() {
 
-//    this.nextWay;
-//    this.to;
-//    this.atFloor;
-//    this.way;
-//    this.stair;
-
     this.reset = function() {
+        this.stairs = [false,false,false,false,false,false];
         this.stair = 0;
         this.way = 'UP';
-        this.atFloor = -1;
         this.to = '';
-        this.nextWay = '';
-        this.floorToGo = -1;
     };
 
     this.go = function(arg) {
-        this.floorToGo = arg.floorToGo;
+        console.log(arg);
+        this.stairs[arg.floorToGo-1] = true;
+        return this;
     };
 
     this.call = function(arg) {
-        this.atFloor = arg.atFloor;
-        this.to = arg.to;
+        console.log(arg);
+        this.stairs[arg.atFloor-1] = true;
+        return this;
     };
 
     this.nextCommand = function () {
-        if (this.stair == this.atFloor) {
+        if (this.stairs[this.stair]) {
             if (this.way == 'OPEN') {
                 this.way = 'CLOSE';
+                this.stairs[this.stair] = false;
             } else {
                 this.way = 'OPEN';
             }
@@ -42,12 +38,15 @@ function elevator() {
                 if (this.way == 'UP') {
                     this.stair++;
                 } else {
-                    this.stair--;
+                    this.way = 'UP';
+                    this.stair++;
                 }
             }
         }
         return this.way;
-    }
+    };
+
+    this.reset();
 }
 
 module.exports = new elevator();

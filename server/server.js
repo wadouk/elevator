@@ -5,7 +5,6 @@ var server = function() {
         var express = require('express');
         var app = express();
 
-        elevator.reset();
         app.configure(function() {
             app.use(app.router);
             app.use(express.static( __dirname+'/../www/'));
@@ -32,13 +31,11 @@ var server = function() {
         }
         function call(req, res) {
             console.log('Serving ' + req.url);
-            elevator.call({atFloor:req.query.atFloor,to:req.query.to})
-            res.send('');
+            res.send(elevator.call({atFloor:req.query.atFloor,to:req.query.to}));
         }
         function go(req, res) {
-            elevator.go({floorToGo:req.query.floorToGo})
             console.log('Serving ' + req.url);
-            res.send('');
+            res.send(elevator.go({floorToGo:req.query.floorToGo}));
         }
         function entered(req, res) {
             console.log('Serving ' + req.url);
