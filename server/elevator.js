@@ -19,6 +19,10 @@ function elevator() {
         return this;
     };
 
+    function reduceOr (previousValue, currentValue, index, array) {
+                            return previousValue || currentValue;
+                        }
+
     this.nextCommand = function () {
         if (this.stairs[this.stair]) {
             if (this.way == 'OPEN') {
@@ -29,18 +33,17 @@ function elevator() {
             }
         } else if (this.stair == 5) {
             this.way = 'DOWN';
-        } else {
-            if (this.stair == 0) {
+        } else if (this.stair == 0) {
+            this.way = 'UP';
+        } else if (this.way == 'CLOSE') {
+            if (this.stairs.slice(this.stair).reduce(reduceOr, false)) {
                 this.way = 'UP';
-            }
-            else {
-                if (this.way == 'CLOSE') {
-                    this.way = 'UP';
-                }
+            } else {
+                this.way = 'DOWN';
             }
         }
 
-        this.stair = this.way == 'UP' ? this.stair+1 : this.way == 'DOWN' ? this.stair-1 : this.stair;
+        this.stair = this.way == 'UP' ? this.stair + 1 : this.way == 'DOWN' ? this.stair - 1 : this.stair;
         return this.way;
     };
 
