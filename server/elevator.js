@@ -9,13 +9,13 @@ function elevator() {
 
     this.go = function(arg) {
         console.log(arg);
-        this.stairs[arg.floorToGo-1] = true;
+        this.stairs[arg.floorToGo] = true;
         return this;
     };
 
     this.call = function(arg) {
         console.log(arg);
-        this.stairs[arg.atFloor-1] = true;
+        this.stairs[arg.atFloor] = true;
         return this;
     };
 
@@ -27,22 +27,20 @@ function elevator() {
             } else {
                 this.way = 'OPEN';
             }
-        } else if (this.stair == 5 && this.way == 'UP') {
-            this.stair--;
+        } else if (this.stair == 5) {
             this.way = 'DOWN';
         } else {
-            if (this.stair == 0 && this.way == 'DOWN') {
+            if (this.stair == 0) {
                 this.way = 'UP';
-                this.stair++;
-            } else {
-                if (this.way == 'UP') {
-                    this.stair++;
-                } else {
+            }
+            else {
+                if (this.way == 'CLOSE') {
                     this.way = 'UP';
-                    this.stair++;
                 }
             }
         }
+
+        this.stair = this.way == 'UP' ? this.stair+1 : this.way == 'DOWN' ? this.stair-1 : this.stair;
         return this.way;
     };
 

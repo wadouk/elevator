@@ -34,7 +34,7 @@ describe 'Code Elevator module', () ->
 
       it 'when call, open close and up', () ->
         elevator.reset()
-        elevator.call({atFloor:3})
+        elevator.call({atFloor:2})
         elevator.stair=2
         elevator.way='UP'
         should.equal(elevator.nextCommand(),'OPEN')
@@ -43,4 +43,28 @@ describe 'Code Elevator module', () ->
         should.equal(elevator.stair,2)
         should.equal(elevator.nextCommand(),'UP')
         should.equal(elevator.stair,3)
+
+      it 'when call highest, open close and down', () ->
+        elevator.reset()
+        elevator.call({atFloor:5})
+        elevator.stair=5
+        elevator.way='UP'
+        should.equal(elevator.nextCommand(),'OPEN')
+        should.equal(elevator.stair,5)
+        should.equal(elevator.nextCommand(),'CLOSE')
+        should.equal(elevator.stair,5)
+        should.equal(elevator.nextCommand(),'DOWN')
+        should.equal(elevator.stair,4)
+
+      it 'when call lowest, open close and up', () ->
+        elevator.reset()
+        elevator.call({atFloor:0})
+        elevator.stair=0
+        elevator.way='UP'
+        should.equal(elevator.nextCommand(),'OPEN')
+        should.equal(elevator.stair,0)
+        should.equal(elevator.nextCommand(),'CLOSE')
+        should.equal(elevator.stair,0)
+        should.equal(elevator.nextCommand(),'UP')
+        should.equal(elevator.stair,1)
 
