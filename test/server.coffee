@@ -1,86 +1,46 @@
-should = require 'should'
-elevator = require '../server/elevator.js'
+server = require '../server/basicserver.js'
+assert = require 'assert'
+http = require 'http'
 
-describe 'Code Elevator module', () ->
-   describe '#dummy', () ->
-      it 'should return hello', () ->
-        elevator.reset()
-        should.equal(elevator.nextCommand(),'UP')
+describe 'server', ->
 
-      it 'when higest go down', () ->
-        elevator.reset()
-        elevator.stair=5
-        should.equal(elevator.nextCommand(),'DOWN')
-        should.equal(elevator.stair,4)
+  describe "get /", ->
+    before ->
+      server.listen 8000
 
-      it 'when lowest go up', () ->
-        elevator.reset()
-        elevator.stair=0
-        should.equal(elevator.nextCommand(),'UP')
-        should.equal(elevator.stair,1)
+    it 'should return 200', (done)->
+      http.get 'http://localhost:8000', (res) ->
+        assert.equal(200, res.statusCode)
+        done()
 
-      it 'when go up stay up', () ->
-        elevator.reset()
-        elevator.stair=3
-        elevator.way='UP'
-        should.equal(elevator.nextCommand(),'UP')
-        should.equal(elevator.stair,4)
+    it 'should say "Hello, world!"', (done) ->
+      http.get 'http://localhost:8000', (res) ->
+        data = '';
+        res.on 'data', (chunk) -> data += chunk
+        res.on 'end', ->
+          assert.equal 'Hello, world!\n', data
+          done()
 
-      it 'when go down stay down', () ->
-        elevator.reset()
-        elevator.stair=3
-        elevator.way='DOWN'
-        should.equal(elevator.nextCommand(),'DOWN')
-        should.equal(elevator.stair,2)
+    it 'basic commands should return 200', (done) ->
+      apis = ["nextCommand","reset","call","go","userHasEntered","userHasExited"]
+      nbApi = 0
 
-      it 'when call, open close and up', () ->
-        elevator.reset()
-        elevator.call({atFloor:2})
-        elevator.go({floorToGo:5})
-        elevator.stair=2
-        elevator.way='UP'
-        should.equal(elevator.nextCommand(),'OPEN')
-        should.equal(elevator.stair,2)
-        should.equal(elevator.nextCommand(),'CLOSE')
-        should.equal(elevator.stair,2)
-        should.equal(elevator.nextCommand(),'UP')
-        should.equal(elevator.stair,3)
+      callback = (res) ->
+        console.log(res.req.path)
+        data = '';
+        res.on 'data', (chunk) -> data += chunk
+        res.on 'end', ->
+          console.log "status", res.statusCode
+          assert.equal '200',res.statusCode
+          nbApi++
+          done() if (nbApi == apis.length)
 
-      it 'when call highest, open close and down', () ->
-        elevator.reset()
-        elevator.call({atFloor:5})
-        elevator.stair=5
-        elevator.way='UP'
-        should.equal(elevator.nextCommand(),'OPEN')
-        should.equal(elevator.stair,5)
-        should.equal(elevator.nextCommand(),'CLOSE')
-        should.equal(elevator.stair,5)
-        should.equal(elevator.nextCommand(),'DOWN')
-        should.equal(elevator.stair,4)
 
-      it 'when call lowest, open close and up', () ->
-        elevator.reset()
-        elevator.call({atFloor:0})
-        elevator.stair=0
-        elevator.way='UP'
-        should.equal(elevator.nextCommand(),'OPEN')
-        should.equal(elevator.stair,0)
-        should.equal(elevator.nextCommand(),'CLOSE')
-        should.equal(elevator.stair,0)
-        should.equal(elevator.nextCommand(),'UP')
-        should.equal(elevator.stair,1)
+      http.get('http://localhost:8000/' + api, callback) for api in apis
 
-      it 'when call at middle and ask to go down, go down', () ->
-        elevator.reset()
-        elevator.call({atFloor:3})
-        elevator.go({floorToGo:0})
-        elevator.stair=3
-        elevator.way='UP'
-        should.equal(elevator.nextCommand(),'OPEN')
-        should.equal(elevator.stair,3)
-        should.equal(elevator.nextCommand(),'CLOSE')
-        should.equal(elevator.stair,3)
-        should.equal(elevator.nextCommand(),'DOWN')
-        should.equal(elevator.stair,2)
+    after ->
+      server.close()
+
+
 
 
