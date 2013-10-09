@@ -1,2 +1,2 @@
 var server = require('./server.js');
-server.start(8000);
+server.start(process.env.PORT || 8000);
