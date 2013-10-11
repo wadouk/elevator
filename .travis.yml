@@ -1,4 +1,4 @@
 Language: node_js
 
 node_js:
-  -  0.10.15
+  - "0.10.15"
