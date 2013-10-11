@@ -1,8 +1,11 @@
 {
-    "name": "code-elevator",
+    "name": "nodeelevator",
     "version": "0.1.0",
     "description": "",
-    "author": "Grégory",
+    "author": "Wadouk",
+    "scripts": {
+        "test":"node_modules/.bin/mocha"
+    },
     "dependencies": {
         "express": "3.2.x",
         "forever": "0.10.x"
