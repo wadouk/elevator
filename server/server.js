@@ -31,11 +31,11 @@ var server = function() {
         }
         function call(req, res) {
             console.log('Serving ' + req.url);
-            res.send(elevator.call({atFloor:req.query.atFloor,to:req.query.to}));
+            res.send(elevator.enableFloor(req.query.atFloor));
         }
         function go(req, res) {
             console.log('Serving ' + req.url);
-            res.send(elevator.go({floorToGo:req.query.floorToGo}));
+            res.send(elevator.enableFloor(req.query.floorToGo));
         }
         function entered(req, res) {
             console.log('Serving ' + req.url);
