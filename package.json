@@ -14,7 +14,7 @@
         "nodemon": "0.7.x",
         "jasmine-node": "1.8.x",
         "coffee-script": ">= 1.2.0",
-        "mocha": "1.0.1",
+        "mocha": "1.13.0",
         "should": ">= 0.6.0",
         "frisby": "0.6.x"
     },
