@@ -10,9 +10,9 @@ describe 'Code Elevator module', () ->
       should.equal(elevator.nextCommand(),'NOTHING')
 
     it 'when higest go down', () ->
-      elevator.currentFloor=5
+      elevator.currentFloor=19
       should.equal(elevator.nextCommand(),'DOWN')
-      should.equal(elevator.currentFloor,4)
+      should.equal(elevator.currentFloor,18)
 
     it 'when lowest go up without call NOTHING', () ->
       elevator.currentFloor=0
