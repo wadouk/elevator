@@ -26,11 +26,9 @@ describe 'server', ->
       nbApi = 0
 
       callback = (res) ->
-        console.log(res.req.path)
         data = '';
         res.on 'data', (chunk) -> data += chunk
         res.on 'end', ->
-          console.log "status", res.statusCode
           assert.equal '200',res.statusCode
           nbApi++
           done() if (nbApi == apis.length)

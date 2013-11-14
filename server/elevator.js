@@ -1,18 +1,19 @@
 
-var MAX_FLOORS = 20;
 
 function elevator() {
+
+    this.MAX_FLOORS = 19;
 
     this.reset = function() {
         function initTable(length) {
             var a = new Array(length);
-            for (var i = 0; i < length;i++) {
+            for (var i = 0; i <= length;i++) {
                 a[i] = false;
             }
             return a;
         }
 
-        this.floors = initTable(MAX_FLOORS);
+        this.floors = initTable(this.MAX_FLOORS);
         this.currentFloor = 0;
         this.way = 'UP';
         this.to = '';
@@ -36,14 +37,18 @@ function elevator() {
     }
 
     this.nextCommand = function () {
+
+        if (this.doorsOpen == true) {
+            this.doorsOpen  = false;
+            return 'CLOSE';
+        }
         if (this.floors[this.currentFloor]) {
-            if (this.way == 'OPEN') {
-                this.way = 'CLOSE';
-                this.floors[this.currentFloor] = false;
-            } else {
-                this.way = 'OPEN';
-            }
-        } else if (this.currentFloor == MAX_FLOORS - 1) {
+            this.doorsOpen = true;
+            this.floors[this.currentFloor] = false;
+            return 'OPEN';
+        }
+
+        if (this.currentFloor == this.MAX_FLOORS) {
             this.way = 'DOWN';
         } else if (this.currentFloor == 0) {
             if (allFalse.call(this)) {
@@ -51,14 +56,8 @@ function elevator() {
             } else {
                 this.way = 'UP';
             }
-        } else if (this.way == 'CLOSE') {
-            if (shouldGoUp.call(this)) {
-                this.way = 'UP';
-            } else {
-                this.way = 'DOWN';
-            }
         } else {
-            var distanceDown = this.floors.slice(0,this.currentFloor).indexOf(true);
+            var distanceDown = this.floors.slice(0,this.currentFloor).reverse().indexOf(true);
             var distanceUp = this.floors.slice(this.currentFloor).indexOf(true);
             if (distanceDown == -1 && distanceUp == -1) {
                 this.way = 'NOTHING';
@@ -67,12 +66,23 @@ function elevator() {
             } else if (distanceUp == -1) {
                 this.way = 'DOWN'
             } else {
-                this.way = (distanceUp > distanceDown) ? 'DOWN' : 'UP'
+                this.way = this.way == 'DOWN' ? 'DOWN' : 'UP'
             }
         }
+        this.currentFloor = this.nextFloor();
 
-        this.currentFloor = this.way == 'UP' ? this.currentFloor + 1 : this.way == 'DOWN' ? this.currentFloor - 1 : this.currentFloor;
         return this.way;
+    };
+
+    this.nextFloor = function (){
+        var sign = 0;
+        switch (this.way) {
+            case 'UP' : sign = 1;
+                break;
+            case 'DOWN' : sign = -1;
+                break;
+        }
+        return this.currentFloor + sign;
     };
 
     this.reset();
