@@ -46,7 +46,7 @@ var server = function() {
             res.send('');
         }
         function force(req,res) {
-            elevator.force();
+            elevator.resetNext();
             res.send('OK');
         }
         app.get('/api/test', test);

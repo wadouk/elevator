@@ -59,8 +59,6 @@ function elevator() {
                 this.way = 'UP';
             } else if (notGoUp) {
                 this.way = 'DOWN'
-            } else {
-                this.way = this.way == 'DOWN' ? 'DOWN' : 'UP'
             }
         }
         this.currentFloor = this.nextFloor();
@@ -68,7 +66,7 @@ function elevator() {
         return this.way;
     };
 
-    this.force = function() {
+    this.resetNext = function() {
         this.force = true;
     };
 
