@@ -24,14 +24,6 @@ function elevator() {
         return this;
     };
 
-    function reduceOr (previousValue, currentValue, index, array) {
-        return previousValue || currentValue;
-    }
-
-    function shouldGoUp() {
-        return this.floors.slice(this.currentFloor).reduce(reduceOr, false);
-    }
-
     function allFalse() {
         return this.floors.reduce(function (previousValue, currentValue, index, array) { return previousValue && !currentValue}, true);
     }
@@ -57,13 +49,13 @@ function elevator() {
                 this.way = 'UP';
             }
         } else {
-            var distanceDown = this.floors.slice(0,this.currentFloor).reverse().indexOf(true);
-            var distanceUp = this.floors.slice(this.currentFloor).indexOf(true);
-            if (distanceDown == -1 && distanceUp == -1) {
+            var notGoDown = this.floors.slice(0,this.currentFloor).reverse().indexOf(true) == -1;
+            var notGoUp = this.floors.slice(this.currentFloor).indexOf(true) == -1;
+            if (notGoDown && notGoUp) {
                 this.way = 'NOTHING';
-            } else if (distanceDown == -1) {
+            } else if (notGoDown) {
                 this.way = 'UP';
-            } else if (distanceUp == -1) {
+            } else if (notGoUp) {
                 this.way = 'DOWN'
             } else {
                 this.way = this.way == 'DOWN' ? 'DOWN' : 'UP'
