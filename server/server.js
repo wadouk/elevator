@@ -45,11 +45,16 @@ var server = function() {
             console.log('Serving ' + req.url);
             res.send('');
         }
+        function force(req,res) {
+            elevator.force();
+            res.send('OK');
+        }
         app.get('/api/test', test);
         app.get('/reset', reset);
         app.get('/nextCommand', nextCommand);
         app.get('/call', call);
         app.get('/go', go);
+        app.get('/force', force);
         app.get('/userHasEntered', entered);
         app.get('/userHasExited', exited);
         app.listen(port);

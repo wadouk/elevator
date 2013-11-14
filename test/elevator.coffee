@@ -5,6 +5,7 @@ describe 'Code Elevator module', () ->
   describe '#dummy', () ->
     beforeEach ->
       elevator.reset()
+      elevator.force = false
 
     it 'should return NOTHING', () ->
       should.equal(elevator.nextCommand(),'NOTHING')

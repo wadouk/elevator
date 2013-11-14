@@ -1,9 +1,6 @@
 
 
 function elevator() {
-
-    this.MAX_FLOORS = 19;
-
     this.reset = function() {
         function initTable(length) {
             var a = new Array(length);
@@ -17,6 +14,7 @@ function elevator() {
         this.currentFloor = 0;
         this.way = 'UP';
         this.to = '';
+        this.MAX_FLOORS = 19;
     };
 
     this.enableFloor = function (floor) {
@@ -30,7 +28,11 @@ function elevator() {
 
     this.nextCommand = function () {
 
-        if (this.doorsOpen == true) {
+        if (this.force === true) {
+            this.force = false;
+            return 'resetmeplease';
+        }
+        if (this.doorsOpen === true) {
             this.doorsOpen  = false;
             return 'CLOSE';
         }
@@ -40,7 +42,7 @@ function elevator() {
             return 'OPEN';
         }
 
-        if (this.currentFloor == this.MAX_FLOORS) {
+        if (this.currentFloor == this.floors.length - 1) {
             this.way = 'DOWN';
         } else if (this.currentFloor == 0) {
             if (allFalse.call(this)) {
@@ -66,6 +68,10 @@ function elevator() {
         return this.way;
     };
 
+    this.force = function() {
+        this.force = true;
+    };
+
     this.nextFloor = function (){
         var sign = 0;
         switch (this.way) {
@@ -77,6 +83,7 @@ function elevator() {
         return this.currentFloor + sign;
     };
 
+    this.force = true;
     this.reset();
 }
 
